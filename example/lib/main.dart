@@ -1,5 +1,5 @@
 // ignore: import_of_legacy_library_into_null_safe
-import 'package:awesome_calendar/awesome_calendar.dart';
+import 'package:custom_calendar/custom_calendar.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -92,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
               const Padding(padding: EdgeInsets.only(top: 20)),
               const Text('Embedded calendar (single select):'),
               Text(embeddedCalendar.toString()),
-              AwesomeCalendar(
+              CustomCalendar(
                 selectedSingleDate: embeddedCalendar,
                 onTap: (DateTime date) {
                   setState(() {
@@ -102,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               const Padding(padding: EdgeInsets.only(top: 20)),
               const Text('Custom colors Embedded calendar (single select):'),
-              AwesomeCalendar(
+              CustomCalendar(
                 selectedSingleDate: DateTime.now(),
                 dayTileBuilder: CustomDayTileBuilder(),
               ),
@@ -117,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final DateTime? picked = await showDialog<DateTime>(
       context: context,
       builder: (BuildContext context) {
-        return const AwesomeCalendarDialog(
+        return const CustomCalendarDialog(
           selectionMode: SelectionMode.single,
         );
       },
@@ -133,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final List<DateTime>? picked = await showDialog<List<DateTime>>(
       context: context,
       builder: (BuildContext context) {
-        return const AwesomeCalendarDialog(
+        return const CustomCalendarDialog(
           selectionMode: SelectionMode.multi,
         );
       },
@@ -149,7 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final List<DateTime>? picked = await showDialog<List<DateTime>>(
       context: context,
       builder: (BuildContext context) {
-        return const AwesomeCalendarDialog(
+        return const CustomCalendarDialog(
           selectionMode: SelectionMode.range,
         );
       },
@@ -165,7 +165,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final List<DateTime>? picked = await showDialog<List<DateTime>>(
       context: context,
       builder: (BuildContext context) {
-        return const AwesomeCalendarDialog(
+        return const CustomCalendarDialog(
           selectionMode: SelectionMode.multi,
           canToggleRangeSelection: true,
         );
@@ -182,7 +182,7 @@ class _MyHomePageState extends State<MyHomePage> {
     await showDialog<DateTime>(
       context: context,
       builder: (BuildContext context) {
-        return const AwesomeCalendarDialog(
+        return const CustomCalendarDialog(
           selectionMode: SelectionMode.single,
           title: Padding(
             padding: EdgeInsets.all(16),
@@ -197,7 +197,7 @@ class _MyHomePageState extends State<MyHomePage> {
     await showDialog<DateTime>(
       context: context,
       builder: (BuildContext context) {
-        return AwesomeCalendarDialog(
+        return CustomCalendarDialog(
           selectionMode: SelectionMode.single,
           startDate: DateTime(2022),
           endDate: DateTime(2022, 12),

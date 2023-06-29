@@ -1,4 +1,4 @@
-part of awesome_calendar;
+part of custom_calendar;
 
 class DefaultDayTile extends StatelessWidget {
   const DefaultDayTile({
@@ -12,7 +12,7 @@ class DefaultDayTile extends StatelessWidget {
   final DateTime date;
 
   /// Function to call when the day is clicked
-  final void Function(DateTime datetime)? onTap;
+  final void Function(DateTime dateTime)? onTap;
 
   /// Background color of the day when it is selected
   final Color? selectedDayColor;
@@ -24,7 +24,7 @@ class DefaultDayTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isToday = CalendarHelper.isToday(date);
 
-    final bool daySelected = AwesomeCalendar.of(context)!.isDateSelected(date);
+    final bool daySelected = CustomCalendar.of(context)!.isDateSelected(date);
 
     BoxDecoration? boxDecoration;
     if (daySelected) {
@@ -46,16 +46,17 @@ class DefaultDayTile extends StatelessWidget {
     return Expanded(
       child: GestureDetector(
         child: Container(
-          height: 40.0,
+          height: 45.0,
           decoration: boxDecoration,
           child: Center(
             child: Text(
               '${date.day}',
               textAlign: TextAlign.center,
               style: TextStyle(
+                fontWeight: FontWeight.w600,
                 color: daySelected
                     ? Colors.white
-                    : Theme.of(context).textTheme.bodyText1!.color,
+                    : Theme.of(context).textTheme.bodyLarge!.color,
                 fontSize: 14,
               ),
             ),
@@ -73,7 +74,7 @@ class DefaultDayTile extends StatelessWidget {
       onTap!(day);
     }
 
-    AwesomeCalendar.of(context)!.setSelectedDate(day);
-    AwesomeCalendar.of(context)!.setCurrentDate(day);
+    CustomCalendar.of(context)!.setSelectedDate(day);
+    CustomCalendar.of(context)!.setCurrentDate(day);
   }
 }

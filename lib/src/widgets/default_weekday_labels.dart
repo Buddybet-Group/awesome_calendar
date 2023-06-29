@@ -1,4 +1,4 @@
-part of awesome_calendar;
+part of custom_calendar;
 
 class DefaultWeekdayLabels extends StatelessWidget {
   final DateTime monday = DateTime(2020, 01, 06);

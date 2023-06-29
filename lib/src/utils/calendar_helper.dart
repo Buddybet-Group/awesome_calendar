@@ -1,4 +1,4 @@
-part of awesome_calendar;
+part of custom_calendar;
 
 // ignore: avoid_classes_with_only_static_members
 class CalendarHelper {
@@ -40,7 +40,7 @@ class CalendarHelper {
     return getLastDayOfMonth(DateTime.now());
   }
 
-  static DateTime? addMonths(DateTime? fromMonth, int months) {
+  static DateTime? addMonths(DateTime fromMonth, int months) {
     DateTime? firstDayOfCurrentMonth = fromMonth;
     for (int i = 0; i < months; i++) {
       firstDayOfCurrentMonth = getLastDayOfMonth(firstDayOfCurrentMonth!)

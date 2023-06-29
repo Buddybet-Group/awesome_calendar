@@ -1,8 +1,8 @@
-part of awesome_calendar;
+part of custom_calendar;
 
 /// A custom date time picker that uses AwesomeCalendar
-class AwesomeCalendarDialog extends StatefulWidget {
-  const AwesomeCalendarDialog({
+class CustomCalendarDialog extends StatefulWidget {
+  const CustomCalendarDialog({
     this.initialDate,
     this.selectedDates,
     this.startDate,
@@ -15,6 +15,9 @@ class AwesomeCalendarDialog extends StatefulWidget {
     this.dayTileBuilder,
     this.weekdayLabels,
     this.title,
+    this.customSubmitButton,
+    this.onSubmit,
+    this.onCancel,
   });
 
   /// Initial date of the date picker, used to know which month needs to be shown
@@ -48,22 +51,28 @@ class AwesomeCalendarDialog extends StatefulWidget {
   /// The builder to create a day widget
   final DayTileBuilder? dayTileBuilder;
 
-  /// A Widget that will be shown on top of the Dailog as a title
+  /// A Widget that will be shown on top of the Dialog as a title
   final Widget? title;
 
   /// The weekdays widget to show above the calendar
   final Widget? weekdayLabels;
 
+  final Widget? customSubmitButton;
+
+  final Function(dynamic)? onSubmit;
+
+  final Function? onCancel;
+
   @override
-  _AwesomeCalendarDialogState createState() => _AwesomeCalendarDialogState(
+  _CustomCalendarDialogState createState() => _CustomCalendarDialogState(
         currentMonth: initialDate,
         selectedDates: selectedDates,
         selectionMode: selectionMode,
       );
 }
 
-class _AwesomeCalendarDialogState extends State<AwesomeCalendarDialog> {
-  _AwesomeCalendarDialogState({
+class _CustomCalendarDialogState extends State<CustomCalendarDialog> {
+  _CustomCalendarDialogState({
     this.currentMonth,
     this.selectedDates,
     this.selectionMode = SelectionMode.single,
@@ -74,12 +83,15 @@ class _AwesomeCalendarDialogState extends State<AwesomeCalendarDialog> {
   List<DateTime>? selectedDates;
   DateTime? currentMonth;
   SelectionMode selectionMode;
-  GlobalKey<AwesomeCalendarState> calendarStateKey =
-      GlobalKey<AwesomeCalendarState>();
+  GlobalKey<CustomCalendarState> calendarStateKey =
+      GlobalKey<CustomCalendarState>();
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
       contentPadding: const EdgeInsets.all(0),
       content: SizedBox(
         width: 300,
@@ -100,7 +112,13 @@ class _AwesomeCalendarDialogState extends State<AwesomeCalendarDialog> {
                             currentMonth!.year, currentMonth!.month - 1));
                       },
                     ),
-                    Text(DateFormat('yMMMM').format(currentMonth!)),
+                    Text(
+                      DateFormat('yMMMM').format(currentMonth!),
+                      style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16),
+                    ),
                     IconButton(
                       icon: const Icon(Icons.keyboard_arrow_right),
                       onPressed: () {
@@ -113,7 +131,7 @@ class _AwesomeCalendarDialogState extends State<AwesomeCalendarDialog> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: AwesomeCalendar(
+                child: CustomCalendar(
                   key: calendarStateKey,
                   startDate: widget.startDate ?? DateTime(2018),
                   endDate: widget.endDate ?? DateTime(2100),
@@ -134,7 +152,10 @@ class _AwesomeCalendarDialogState extends State<AwesomeCalendarDialog> {
                 ListTile(
                   title: Text(
                     widget.rangeToggleText,
-                    style: const TextStyle(fontSize: 13),
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 16),
                   ),
                   leading: Switch(
                     value: selectionMode == SelectionMode.range,
@@ -154,22 +175,57 @@ class _AwesomeCalendarDialogState extends State<AwesomeCalendarDialog> {
         ),
       ),
       actions: <Widget>[
-        TextButton(
-          child: Text(widget.cancelBtnText),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        TextButton(
-          child: Text(widget.confirmBtnText),
-          onPressed: () {
-            final AwesomeCalendarState? calendar =
-                calendarStateKey.currentState;
-            Navigator.of(context).pop(
-              widget.selectionMode == SelectionMode.single
-                  ? calendar!.selectedSingleDate
-                  : calendar!.selectedDates,
-            );
-          },
-        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            TextButton(
+              child: Text(widget.cancelBtnText),
+              onPressed: () {
+                if (widget.onCancel != null) {
+                  widget.onCancel!();
+                } else {
+                  Navigator.of(context).pop();
+                }
+              },
+            ),
+            const SizedBox(
+              width: 50,
+            ),
+            (widget.customSubmitButton == null)
+                ? TextButton(
+                    child: Text(widget.confirmBtnText),
+                    onPressed: () {
+                      final CustomCalendarState? calendar =
+                          calendarStateKey.currentState;
+                      final selectedValue =
+                          widget.selectionMode == SelectionMode.single
+                              ? calendar!.selectedSingleDate
+                              : calendar!.selectedDates;
+                      if (widget.onSubmit != null) {
+                        widget.onSubmit!(selectedValue);
+                      } else {
+                        Navigator.of(context).pop(selectedValue);
+                      }
+                    },
+                  )
+                : GestureDetector(
+                    onTap: () {
+                      final CustomCalendarState? calendar =
+                          calendarStateKey.currentState;
+                      final selectedValue =
+                          widget.selectionMode == SelectionMode.single
+                              ? calendar!.selectedSingleDate
+                              : calendar!.selectedDates;
+                      if (widget.onSubmit != null) {
+                        widget.onSubmit!(selectedValue);
+                      } else {
+                        Navigator.of(context).pop(selectedValue);
+                      }
+                    },
+                    child: widget.customSubmitButton!,
+                  )
+          ],
+        )
       ],
     );
   }

@@ -1,7 +1,7 @@
-part of awesome_calendar;
+part of custom_calendar;
 
-class AwesomeCalendar extends StatefulWidget {
-  const AwesomeCalendar({
+class CustomCalendar extends StatefulWidget {
+  const CustomCalendar({
     Key? key,
     this.startDate,
     this.endDate,
@@ -30,9 +30,9 @@ class AwesomeCalendar extends StatefulWidget {
   final Widget? weekdayLabels;
 
   /// The function when the user clicks on a day
-  final void Function(DateTime datetime)? onTap;
+  final void Function(DateTime dateTime)? onTap;
 
-  /// Function trigered when the current page of the calendar changes
+  /// Function triggered when the current page of the calendar changes
   final void Function(DateTime pageStartDate, DateTime pageEndDate)?
       onPageSelected;
 
@@ -42,19 +42,19 @@ class AwesomeCalendar extends StatefulWidget {
   /// The list of selected dates in case of multi or range selection mode
   final List<DateTime>? selectedDates;
 
-  /// Function to get the state of awesome_calendar
-  static AwesomeCalendarState? of(BuildContext context) =>
-      context.findAncestorStateOfType<AwesomeCalendarState>();
+  /// Function to get the state of custom_calendar
+  static CustomCalendarState? of(BuildContext context) =>
+      context.findAncestorStateOfType<CustomCalendarState>();
 
   @override
-  AwesomeCalendarState createState() => AwesomeCalendarState(
+  CustomCalendarState createState() => CustomCalendarState(
         selectedSingleDate: selectedSingleDate,
         selectedDates: selectedDates,
       );
 }
 
-class AwesomeCalendarState extends State<AwesomeCalendar> {
-  AwesomeCalendarState({
+class CustomCalendarState extends State<CustomCalendar> {
+  CustomCalendarState({
     this.selectedSingleDate,
     this.selectedDates,
   });
@@ -114,13 +114,11 @@ class AwesomeCalendarState extends State<AwesomeCalendar> {
         itemCount: pagesCount,
         controller: controller,
         onPageChanged: (int page) {
-          if (widget.onPageSelected != null) {
-            final DateRange pageDateRange = _calculatePageDateRange(page);
-            widget.onPageSelected!(
-              pageDateRange.startDate,
-              pageDateRange.endDate,
-            );
-          }
+          final DateRange pageDateRange = _calculatePageDateRange(page);
+          widget.onPageSelected!(
+            pageDateRange.startDate,
+            pageDateRange.endDate,
+          );
         },
       ),
     );
@@ -235,6 +233,7 @@ class AwesomeCalendarState extends State<AwesomeCalendar> {
 
 class DateRange {
   DateRange(this.startDate, this.endDate);
+
   DateTime startDate;
   DateTime endDate;
 }

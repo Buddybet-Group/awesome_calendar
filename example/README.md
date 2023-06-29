@@ -1,3 +1,3 @@
 # example
 
-Example usage of awesome_calendar package
+Example usage of custom_calendar package

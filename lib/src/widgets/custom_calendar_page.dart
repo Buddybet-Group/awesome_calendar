@@ -1,4 +1,4 @@
-part of awesome_calendar;
+part of custom_calendar;
 
 class AwesomeCalendarPage extends StatelessWidget {
   const AwesomeCalendarPage({
@@ -25,7 +25,7 @@ class AwesomeCalendarPage extends StatelessWidget {
   final DayTileBuilder dayTileBuilder;
 
   /// The function when the user clicks on a day
-  final void Function(DateTime datetime)? onTap;
+  final void Function(DateTime dateTime)? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +86,7 @@ class AwesomeCalendarPage extends StatelessWidget {
         items.add(dayTile);
         currentDate = currentDate.add(const Duration(days: 1));
       } else {
-        // Adds empty spaces at the begining and end of the page if necessary
+        // Adds empty spaces at the beginning and end of the page if necessary
         items.add(
           const Expanded(
             child: Text(''),

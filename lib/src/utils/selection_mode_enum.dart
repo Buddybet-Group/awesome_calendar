@@ -1,3 +1,3 @@
-part of awesome_calendar;
+part of custom_calendar;
 
 enum SelectionMode { single, multi, range }
